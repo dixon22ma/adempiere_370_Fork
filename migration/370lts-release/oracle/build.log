@@ -1,0 +1,23 @@
+#Build log:
+
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/809_796_FixProductBOMCore.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/809_BF3450248_AddInvoicePaySchedule.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/810_792_FixDictionaryError.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/820_FR3456545_sysconfig.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/821_001_ViewSmartBrowse.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/822_002_ApplictionDictionary.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/823_004_FixAccesLevel.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/824_005_Changes.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/825_604_FR2899403_AD_Element.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/826_006_ADEMPIERE-128_AxisColumn.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/827_007_AddDependences.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/828_008_AddBrowseToProcedure.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/829_009_AddBrowseAccess.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/830_011_ReadOnlyFields.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/831_012_Fix_Windows.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/832_013_CreateForeingKeys.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/833_014_BrowseOrderByClause.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/834_015_BrowseAddFieldForCriterial.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/835_ADEMPIERE-84-Add-New-Dunning-Fields.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/836_ADEMPIERE-84-Add-Org.sql status 0
+File /opt/Development/adempiere_370/migration/370lts-release/oracle/837_AD_Migration.sql status 0

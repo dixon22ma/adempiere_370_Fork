@@ -1,0 +1,23 @@
+#Build log:
+
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/809_796_FixProductBOMCore.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/809_BF3450248_AddInvoicePaySchedule.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/810_792_FixDictionaryError.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/820_FR3456545_sysconfig.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/821_001_ViewSmartBrowse.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/822_002_ApplicationDictionary.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/823_004_FixAccesLevel.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/824_005_Changes.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/825_604_FR2899403_AD_Element.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/826_006_ADEMPIERE-128_AxisColumn.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/827_007_AddDependences.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/828_008_AddBrowseToProcedure.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/829_009_AddBrowseAccess.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/830_011_ReadOnlyFields.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/831_012_Fix_Windows.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/832_013_CreateForeingKeys.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/833_014_BrowseOrderByClause.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/834_015_BrowseAddFieldForCriterial.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/835_ADEMPIERE-84-Add-New-Dunning-Fields.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/836_ADEMPIERE-84-Add-Org.sql status 0
+File /opt/Development/workspace/adempiere_370/migration/370lts-release/postgresql/837_AD_Migration.sql status 0
