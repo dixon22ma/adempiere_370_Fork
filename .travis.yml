@@ -1,3 +1,6 @@
+language: 
+  java
+
 addons:
   postgresql: "9.4"
   
@@ -10,5 +13,12 @@ before_install:
   - sudo /etc/init.d/postgresql stop
   - sudo /etc/init.d/postgresql start 9.4
   
-language: java
-script: ant todo
+before_script:
+  - psql -c 'CREATE USER adempiere PASSWORD ''1234'';'
+  - psql -c 'ALTE ROLE adempiere WITH CREATEDB LOGIN;'
+  - psql -c 'create database adempiere_380 WITH OWNER adempiere;' -U postgres
+  mkdir /opt/Apps/
+
+script: 
+  ant todo
+  
