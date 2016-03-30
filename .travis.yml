@@ -1,8 +1,2 @@
-install: ./install_dependencies.sh
 language: java
-
-script: ant adempiere_370_Fork/utils_dev/build.xml
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk6
+script: ant https://github.com/erpcya/adempiere_370_Fork/adempiere_370_Fork/utils_dev/build.xml
