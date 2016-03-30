@@ -1,17 +1,19 @@
 language: 
   java
 
-addons:
-  postgresql: "9.4"
-  
 services:
   - postgresql
   
 before_install:
+  addons:
+    postgresql: "9.4"
+    firefox: "17.0"
+
   - sudo apt-get update
   - sudo apt-get install language-pack-es
   - sudo /etc/init.d/postgresql stop
   - sudo /etc/init.d/postgresql start 9.4
+
   
 before_script:
   - psql -c 'CREATE USER adempiere PASSWORD ''1234'';'
