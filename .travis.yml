@@ -1,2 +1,2 @@
 language: java
-script: ant adempiere_370_Fork/utils_dev/build.xml
+script: ant https://github.com/erpcya/adempiere_370_Fork/adempiere_370_Fork/utils_dev/build.xml
