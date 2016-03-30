@@ -1,2 +1,14 @@
+addons:
+  postgresql: "9.4"
+  
+services:
+  - postgresql
+  
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install language-pack-es
+  - sudo /etc/init.d/postgresql stop
+  - sudo /etc/init.d/postgresql start 9.4
+  
 language: java
 script: ant todo
