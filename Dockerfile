@@ -1,25 +1,21 @@
-# Creating Docker Image
-FROM ubuntu
-MAINTAINER Dixon Martinez <dmartinez@erpcya.com>
+FROM ubuntu:14.04
 
-ENV ADEMPIERE_HOME = /opt/Apps/Adempiere
+MAINTAINER carlad "https://github.com/carlad"
 
-#Update Packages
+# Install packages for building ruby
 RUN apt-get update
-RUN apt-get --force-yes install -y wget
-RUN apt-get --force-yes install -y openssh-server
-RUN apt-get --force-yes install -y nano
-RUN apt-get --force-yes install -y psmisc
-RUN apt-get --force-yes install -y git
-RUN apt-get --force-yes install -y ant
+RUN apt-get install -y --force-yes build-essential wget git
+RUN apt-get install -y --force-yes zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev
+RUN apt-get clean
 
-RUN mkdir ADEMPIERE_HOME
+RUN wget -P /root/src http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
+RUN cd /root/src; tar xvf ruby-2.2.2.tar.gz
+RUN cd /root/src/ruby-2.2.2; ./configure; make install
 
-WORKDIR ADEMPIERE_HOME
+RUN gem update --system
+RUN gem install bundler
 
-RUN git clone https://github.com/erpcya/adempiere_370_Fork.git
+RUN git clone https://github.com/travis-ci/docker-sinatra /root/sinatra
+RUN cd /root/sinatra; bundle install
 
-RUN ant build.xml
-
-RUN cp adempiere_370_Fork/adempiere/Adempiere $ADEMPIERE_HOME
-
+EXPOSE 4567
