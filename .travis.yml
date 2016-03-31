@@ -1,8 +1,12 @@
-language: 
-  java
+language: bash
 
 services:
-  - postgresql
+  - docker
+  
+env
+  ADEMPIERE_HOME = /opt/Apps/Adempiere
+  JAVA_HOME = /usr/local/jdk
+  
   
 before_install:
   addons:
