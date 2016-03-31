@@ -1,0 +1,1 @@
+{"containers":[{"prettyName":"java 7","image":"dockunit/prebuilt-images:java-maven-ant-gradle-openjdk-7","testCommand":"gradle build","beforeScripts":[]}]}
