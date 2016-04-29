@@ -3,12 +3,14 @@ sudo: required
 language: java
 
 install: ant
+jdk: oraclejdk8
+
 services:
   - docker
-  - postgresql: "9.4"
+  - postgresql
 
-before_install:
-  - docker build -t adempiere .
+#before_install:
+  #- docker build -t adempiere .
 
 script:
    ant todo
