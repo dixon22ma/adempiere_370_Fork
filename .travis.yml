@@ -3,7 +3,7 @@ sudo: required
 language: java
 
 install: ant
-jdk: oraclejdk8
+jdk: oraclejdk7
 
 services:
   - docker
