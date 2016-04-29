@@ -1,21 +1,25 @@
 FROM ubuntu:14.04
 
-MAINTAINER carlad "https://github.com/carlad"
+MAINTAINER Dixon Martinez "https://github.com/dixon22ma"
 
 # Install packages for building ruby
 RUN apt-get update
-RUN apt-get install -y --force-yes build-essential wget git
-RUN apt-get install -y --force-yes zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev
+RUN apt-get install -y --force-yes build-essential wget gzip tar
 RUN apt-get clean
 
-RUN wget -P /root/src http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
-RUN cd /root/src; tar xvf ruby-2.2.2.tar.gz
-RUN cd /root/src/ruby-2.2.2; ./configure; make install
+RUN mkdir /opt/Install/ \ && cd /opt/Install
+RUN wget http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
+RUN tar -xzvf jdk-7u79-linux-x64.tar.gz -C /usr/local/jdk
 
-RUN gem update --system
-RUN gem install bundler
+RUN update-alternatives --install /usr/bin/java java /usr/local/jdk/bin/java 1067
+RUN update-alternatives --install /usr/bin/javac javac /usr/local/jdk/bin/javac 1067
+RUN update-alternatives --install /usr/bin/javaws javaws /usr/local/jdk/bin/javaws 1067
 
-RUN git clone https://github.com/travis-ci/docker-sinatra /root/sinatra
-RUN cd /root/sinatra; bundle install
 
-EXPOSE 4567
+RUN update-alternatives --auto java
+RUN update-alternatives --auto javac
+RUN update-alternatives --auto javaws
+
+RUN java -version
+
+EXPOSE 8080
