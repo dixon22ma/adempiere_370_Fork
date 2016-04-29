@@ -10,5 +10,6 @@ services:
 before_script
   - ant todo
 
+  
 before_install:
   - docker build -t adempiere .
