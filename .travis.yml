@@ -8,9 +8,7 @@ jdk: oraclejdk7
 services:
   - docker
   - postgresql
-
-#before_install:
-  #- docker build -t adempiere .
-
 script:
    ant todo
+after_success:
+  - docker build -t adempiere .
