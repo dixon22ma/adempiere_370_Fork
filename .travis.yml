@@ -1,15 +1,21 @@
 sudo: required
 
-language: bash
+language: 
+  bash
+  java
 
 services:
   - docker
+  - postgresql: "9.5"
+
+before_script
+  - ant todo
 
 before_install:
-  - docker build -t carlad/sinatra .
-  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
-  - docker ps -a
-  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+  - docker build -t adempiere .
+  #- docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+  #- docker ps -a
+  #- docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
 
-script:
-  - bundle exec rake test
+#script:
+  #- bundle exec rake test
