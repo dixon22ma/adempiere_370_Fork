@@ -33,6 +33,7 @@ package com.akunagroup.uk.postcode;
  */
 public interface AddressInterface
 {
+	
 	public int size();
 
 	public String getStreet1();
