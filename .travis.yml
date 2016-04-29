@@ -1,7 +1,9 @@
 sudo: required
 
-language: 
-  bash
+language: java
+	
+install:
+	ant
 	
 services:
   - docker
@@ -9,3 +11,6 @@ services:
 
 before_install:
   - docker build -t adempiere .
+
+script:
+   ant todo
