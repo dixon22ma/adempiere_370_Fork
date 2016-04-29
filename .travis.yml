@@ -7,9 +7,5 @@ services:
   - docker
   - postgresql: "9.5"
 
-before_script
-  - ant todo
-
-  
 before_install:
   - docker build -t adempiere .
