@@ -4,7 +4,7 @@ MAINTAINER Dixon Martinez "https://github.com/dixon22ma"
 
 # Install packages for building ruby
 RUN apt-get update
-RUN apt-get install -y --force-yes build-essential wget gzip
+RUN apt-get install -y --force-yes build-essential wget gzip tar
 RUN apt-get clean
 
 RUN mkdir /opt/Install/ \ && cd /opt/Install
