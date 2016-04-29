@@ -16,6 +16,7 @@ RUN update-alternatives --install /usr/bin/javac javac /usr/local/jdk/bin/javac 
 RUN update-alternatives --install /usr/bin/javaws javaws /usr/local/jdk/bin/javaws 1067
 
 
+
 RUN update-alternatives --auto java
 RUN update-alternatives --auto javac
 RUN update-alternatives --auto javaws
