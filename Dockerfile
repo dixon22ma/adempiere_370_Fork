@@ -7,7 +7,7 @@ RUN apt-get update
 RUN apt-get install -y --force-yes build-essential wget gzip tar
 RUN apt-get clean
 
-RUN mkdir /opt/Install/ \ && cd /opt/Install
+RUN mkdir /opt/Install/ \ && cd /opt/Install \ && mkdir /usr/local/jdk
 RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
 RUN tar xvzf jdk-7u79-linux-x64.tar.gz -C /usr/local/jdk
 
