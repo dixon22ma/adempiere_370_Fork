@@ -2,7 +2,7 @@ sudo: required
 
 language: 
   bash
-  java
+  #java
 
 services:
   - docker
@@ -18,6 +18,6 @@ before_install:
   #- docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
 
   
-script:
+#script:
   #- bundle exec rake test
-  ant todo
+ # ant todo
