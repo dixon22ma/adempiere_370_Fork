@@ -1,37 +1,49 @@
-FROM ubuntu:14.04
+# Dockerfile for ADempiere 380 with PostgreSQL 9.4
 
-MAINTAINER Dixon Martinez "https://github.com/dixon22ma"
+FROM ubuntu
+MAINTAINER victor.perez@e-evolution.com
 
-# Install packages for building ruby
-RUN apt-get update
-RUN apt-get install -y --force-yes build-essential wget gzip tar
-RUN apt-get clean
+USER root
 
-RUN mkdir /opt/Install/ \ && cd /opt/Install \ && mkdir /usr/local/jdk \ && mkdir /opt/Apps/ \ && chmod -R 0777 /opt/Apps
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
-RUN tar xvzf jdk-7u79-linux-x64.tar.gz -C /usr/local/jdk
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
 
-#RUN update-alternatives --install /usr/bin/java java /usr/local/jdk/bin/java 1067
-#RUN update-alternatives --install /usr/bin/javac javac /usr/local/jdk/bin/javac 1067
-#RUN update-alternatives --install /usr/bin/javaws javaws /usr/local/jdk/bin/javaws 1067
+# Add the PostgreSQL PGP key to verify their Debian packages.
+# It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
-#RUN update-alternatives --auto java
-#RUN update-alternatives --auto javac
-#RUN update-alternatives --auto javaws
+# Add PostgreSQL's repository. It contains the most recent stable release
+#     of PostgreSQL, ``9.4``.
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-ADD /home/travis/build/erpcya/adempiere_370_Fork/adempiere/Adempiere /opt/Apps/
-RUN echo "JAVA_HOME='/usr/local/jdk'" >> /etc/profile
-RUN echo "PATH='$PATH:/usr/local/jdk/bin'" >> /etc/profile 
-RUN echo "ADEMPIERE_HOME='/opt/Apps/Adempiere'" >> /etc/profile
-RUN echo "export JAVA_HOME" >> /etc/profile
-RUN echo "export PATH" >> /etc/profile         
-RUN echo "export ADEMPIERE_HOME" >> /etc/profile
+# Install ``python-software-properties``, ``software-properties-common`` and PostgreSQL 9.4
+#  There are some warnings (in red) that show up during the build. You can hide
+#  them by prefixing each apt-get statement with DEBIAN_FRONTEND=noninteractive
+#RUN apt-get update && apt-get install -y python-software-properties software-properties-common postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4 wget openssh-server
+RUN apt-get update &&  apt-get install -y python-software-properties software-properties-common postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4 wget openssh-server
 
-source /etc/profile
+# Note: The official Debian and Ubuntu images automatically ``apt-get clean``
+# after each ``apt-get``
 
-RUN cd $ADEMPIERE_HOME
-RUN sed -i  "s/IP/$(hostname -i)/g" AdempiereEnv.properties
-RUN sed -i  "s/HOST/$(hostname)/g" AdempiereEnv.properties
+# Install Java.
+#RUN \
+#  apt-get update && \
+#  apt-get install -y openjdk-7-jdk && \
+#  rm -rf /var/lib/apt/lists/*
+
+RUN \
+  apt-get install -y openjdk-7-jdk && \
+  rm -rf /var/lib/apt/lists/*
+
+
+# Define working directory.
+WORKDIR /data
+
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+RUN mkdir /data/app
+RUN chmod -R 777 /data/app
 
 RUN mkdir /var/run/sshd
 RUN echo 'root:adempiere' | chpasswd
@@ -39,10 +51,66 @@ RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/ss
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-#sed -r "s@172.17.0.2@$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)@" /opt/Apps/Adempiere/AdempiereEnv.properties
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
 
-RUN sh RUN_silentsetup.sh
-#tar xvzf jboss.tar.gz
-RUN sh utils/RUN_Server2.sh &
+RUN wget http://dl.bintray.com/adempiere/Official-Repository/Adempiere_380LTS.tar.gz -O /data/app/Adempiere_380LTS.tar.gz
+RUN cd /data/app && tar -zxvf /data/app/Adempiere_380LTS.tar.gz -C /data/app/
+RUN chmod -R 777 /data/app
+RUN sed "s/ADEMPIERE_HOME=C*....Adempiere/ADEMPIERE_HOME=\/data\/app\/Adempiere/g" /data/app/Adempiere/AdempiereEnvTemplate.properties > /data/app/Adempiere/AdempiereEnv.tmp.1
+RUN sed "s/JAVA_HOME=C*..................................../JAVA_HOME=\/usr\/lib\/jvm\/java-7-openjdk-amd64/g" /data/app/Adempiere/AdempiereEnv.tmp.1 > /data/app/Adempiere/AdempiereEnv.tmp.2
+RUN sed "s/ADEMPIERE_APPS_SERVER=localhost/ADEMPIERE_APPS_SERVER=adempiere-postgres/g" /data/app/Adempiere/AdempiereEnv.tmp.2 > /data/app/Adempiere/AdempiereEnv.tmp.3
+RUN sed "s/ADEMPIERE_KEYSTORE=C*..................................../ADEMPIERE_KEYSTORE=\/data\/app\/Adempiere\/keystore\/myKeystore/g" /data/app/Adempiere/AdempiereEnv.tmp.3 > /data/app/Adempiere/AdempiereEnv.properties
+RUN cat /data/app/Adempiere/AdempiereEnv.properties
+ENV ADEMPIERE_HOME /data/app/Adempiere/
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
+
+# Adjust PostgreSQL configuration so that remote connections to the
+# database are possible. 
+
+RUN sed "s/local   all             postgres                                peer/local   all             postgres                                trust/g" /etc/postgresql/9.4/main/pg_hba.conf > /etc/postgresql/9.4/main/pg_hba.tmp.1 
+RUN sed "s/local   all             all                                     peer/local   all             all                                     trust/g" /etc/postgresql/9.4/main/pg_hba.tmp.1 > /etc/postgresql/9.4/main/pg_hba.tmp.2
+RUN sed "s/host    all             all             127.0.0.1\/32            md5/host    all             all             $(hostname -i)\/32            trust/g" /etc/postgresql/9.4/main/pg_hba.tmp.2 > /etc/postgresql/9.4/main/pg_hba.tmp.3
+RUN sed "s/host    all             all             127.0.0.1\/32            md5/host    all             all             127.0.0.1\/32            trust/g" /etc/postgresql/9.4/main/pg_hba.tmp.3 > /etc/postgresql/9.4/main/pg_hba.tmp.4
+RUN sed "s/host    all             all             ::1\/128                 md5/host    all             all             ::1\/128                 trust/g" /etc/postgresql/9.4/main/pg_hba.tmp.4 > /etc/postgresql/9.4/main/pg_hba.conf
+
+RUN echo "host all all 0.0.0.0/0 trust" >> /etc/postgresql/9.4/main/pg_hba.conf
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf
+#RUN echo "host all all $(hostname -i)/24 trust" >> /etc/postgresql/9.4/main/pg_hba.conf
+# And add ``listen_addresses`` to ``/etc/postgresql/9.4/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf
+
+# Run the rest of the commands as the ``postgres`` user created by the ``postgres-9.4`` package when it was ``apt-get installed``
+# Create a PostgreSQL role named ``adempiere`` with ``adempiere`` as the password and
+# then create a database `adempiere` owned by the ``adempiere`` role.
+# Note: here we use ``&&\`` to run commands one after the other - the ``\``
+#       allows the RUN command to span multiple lines.
+RUN echo "ALTER USER postgres WITH PASSWORD 'postgres'; " >> /data/app/pg_setup.sql
+RUN echo "CREATE USER adempiere WITH SUPERUSER PASSWORD 'adempiere';"  >> /data/app/pg_setup.sql
+RUN echo "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';" >> /data/app/pg_setup.sql
+RUN echo "DROP DATABASE template1; " >> /data/app/pg_setup.sql
+RUN echo "CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';" >> /data/app/pg_setup.sql
+RUN echo "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';" >> /data/app/pg_setup.sql
+RUN echo "CREATE DATABASE adempiere OWNER adempiere ENCODING 'UNICODE' TEMPLATE template1;"  >> /data/app/pg_setup.sql;
+RUN cat /data/app/pg_setup.sql
+RUN /etc/init.d/postgresql restart && psql -U postgres < /data/app/pg_setup.sql && cd /data/app/Adempiere/ && ./RUN_silentsetup.sh && cd /data/app/Adempiere/utils/ && ./RUN_ImportAdempiere.sh
+RUN echo "#!/bin/bash" >> /data/app/start.sh
+RUN echo "/etc/init.d/postgresql restart" >> /data/app/start.sh
+RUN echo "cd /data/app/Adempiere/utils/" >> /data/app/start.sh
+RUN echo "nohup ./RUN_Server2.sh &" >> /data/app/start.sh
+RUN chmod 777 /data/app/start.sh
+RUN cat /data/app/start.sh
+# Expose the PostgreSQL port
+USER postgres
+#RUN    /etc/init.d/postgresql start
+# Add VOLUMEs to allow backup of config, logs and databases
+VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql" ]
+#CMD ["/usr/lib/postgresql/9.4/bin/postgres", "-D", "/var/lib/postgresql/9.4/main", "-c", "config_file=/etc/postgresql/9.4/main/postgresql.conf"]
+USER root
+EXPOSE 22
+EXPOSE 80
 EXPOSE 8080
+EXPOSE 443
+EXPOSE 5432
+CMD /usr/sbin/sshd -D
