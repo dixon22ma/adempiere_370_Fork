@@ -12,3 +12,6 @@ script:
    ant todo
 after_success:
   - docker build -t adempiere .
+notifications:
+  email:
+    - desarrollo@erpcya.com
