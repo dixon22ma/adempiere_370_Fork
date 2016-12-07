@@ -5,9 +5,6 @@ language: java
 install: ant
 jdk: oraclejdk7
 
-services:
-  - docker
-  - postgresql
 script:
    ant todo
 after_success:
