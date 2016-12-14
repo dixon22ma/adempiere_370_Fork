@@ -10,10 +10,10 @@ script:
 addons:
     apt:
         packages:
-            -sshpass
+            - sshpass
 after_success:
-   export SSHPASS=$PASS
-     sshpass -e scp package.tgz $USER@$HOST:$TOPATH
+  - export SSHPASS=$PASS
+     - sshpass -e scp package.tgz $USER@$HOST:$TOPATH
     
 notifications:
   email:
