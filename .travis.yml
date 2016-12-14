@@ -13,8 +13,8 @@ addons:
             - sshpass
 after_success:
   - export SSHPASS=$PASS
-     - sshpass -e scp /home/travis/build/erpcya/adempiere_370_Fork/install/build/Adempiere_370LTS.tar.gz $USER@$HOST:$TOPATH
-     - sshpass -e ssh $USER@$HOST $TOPATH/deploy.sh
+   sshpass -e scp /home/travis/build/erpcya/adempiere_370_Fork/install/build/Adempiere_370LTS.tar.gz $USER@$HOST:$TOPATH
+   sshpass -e ssh $USER@$HOST $TOPATH/deploy.sh
     
 notifications:
   email:
