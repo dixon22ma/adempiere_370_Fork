@@ -7,7 +7,14 @@ jdk: oraclejdk7
 
 script:
    ant todo
-
+addons:
+    apt:
+        packages:
+            sshpass
+after_success:
+   export SSHPASS=$PASS
+     sshpass -e scp package.tgz $USER@$HOST:$PATH
+    
 notifications:
   email:
-    - desarrollo@erpcya.com
+     desarrollo@erpcya.com
